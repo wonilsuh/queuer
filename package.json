@@ -1,0 +1,23 @@
+{
+  "name": "queuer",
+  "version": "1.0.0",
+  "description": "A simple queueing mechanism",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wonilsuh/queuer.git"
+  },
+  "keywords": [
+    "javascript",
+    "queue"
+  ],
+  "author": "Wonil Suh <wonil@wonilsuh.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/wonilsuh/queuer/issues"
+  },
+  "homepage": "https://github.com/wonilsuh/queuer#readme"
+}
