@@ -1,5 +1,7 @@
 "use strict";
 
+const EventEmitter = require('events');
+
 class Queuer{
 	constructor(args){
 		console.log('Queuer!!!');
@@ -7,14 +9,26 @@ class Queuer{
 
 		this.queue = [];
 		this.isQueueRunning = false;
-		this.interval = args.interval || 50;
+		this.interval = args.interval || 1;
+
+		this.eventEmitter = new EventEmitter();
+
 	}
 
-	push(func){
-		// console.log('Queuer.push...');
-		this.queue.push(func);
+	on(){
+		this.eventEmitter.on(...arguments);
+	}
 
-		this.runQueue();
+	push(func, options){
+		// console.log('Queuer.push...');
+		options = options||{};
+
+		this.queue.push({
+			func:func,
+			options:options
+		});
+
+		if(options.startNow!==false) this.runQueue();
 	}
 
 	runQueue(){
@@ -31,13 +45,15 @@ class Queuer{
 				// console.log('Queuer.runATask...'+this.queue.length);
 				this.isQueueRunning = true;
 				var newTask = this.queue.shift();
-				newTask(function(){
+				newTask.func(function(result){
 					this.isQueueRunning = false;
+					this.eventEmitter.emit(result===true ? 'TASK-COMPLETE' : 'TASK-FAIL', newTask.options);
 				}.bind(this));
 			}else{
 				// console.log('Queuer.runATask:done!!!');
 				clearInterval(this.intervalId);
 				this.isQueueRunning = false;
+				this.eventEmitter.emit('ALL-COMPLETE');
 			}
 		}
 	}
