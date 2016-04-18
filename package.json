@@ -1,5 +1,5 @@
 {
-  "name": "queuer",
+  "name": "simple-queuer",
   "version": "1.0.0",
   "description": "A simple queueing mechanism",
   "main": "index.js",
