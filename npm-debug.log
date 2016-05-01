@@ -1,0 +1,98 @@
+0 info it worked if it ends with ok
+1 verbose cli [ '/usr/local/bin/node', '/usr/local/bin/npm', 'publish' ]
+2 info using npm@3.7.3
+3 info using node@v5.8.0
+4 verbose publish [ '.' ]
+5 silly cache add args [ '.', null ]
+6 verbose cache add spec .
+7 silly cache add parsed spec Result {
+7 silly cache add   raw: '.',
+7 silly cache add   scope: null,
+7 silly cache add   name: null,
+7 silly cache add   rawSpec: '.',
+7 silly cache add   spec: '/Users/suhwonil/Sites/npm/simple-queuer',
+7 silly cache add   type: 'directory' }
+8 verbose addLocalDirectory /Users/suhwonil/.npm/simple-queuer/1.0.2/package.tgz not in flight; packing
+9 verbose correctMkdir /Users/suhwonil/.npm correctMkdir not in flight; initializing
+10 info lifecycle simple-queuer@1.0.2~prepublish: simple-queuer@1.0.2
+11 silly lifecycle simple-queuer@1.0.2~prepublish: no script for prepublish, continuing
+12 verbose tar pack [ '/Users/suhwonil/.npm/simple-queuer/1.0.2/package.tgz',
+12 verbose tar pack   '/Users/suhwonil/Sites/npm/simple-queuer' ]
+13 verbose tarball /Users/suhwonil/.npm/simple-queuer/1.0.2/package.tgz
+14 verbose folder /Users/suhwonil/Sites/npm/simple-queuer
+15 verbose addLocalTarball adding from inside cache /Users/suhwonil/.npm/simple-queuer/1.0.2/package.tgz
+16 verbose correctMkdir /Users/suhwonil/.npm correctMkdir not in flight; initializing
+17 silly cache afterAdd simple-queuer@1.0.2
+18 verbose afterAdd /Users/suhwonil/.npm/simple-queuer/1.0.2/package/package.json not in flight; writing
+19 verbose correctMkdir /Users/suhwonil/.npm correctMkdir not in flight; initializing
+20 verbose afterAdd /Users/suhwonil/.npm/simple-queuer/1.0.2/package/package.json written
+21 silly publish { name: 'simple-queuer',
+21 silly publish   version: '1.0.2',
+21 silly publish   description: 'A simple queueing mechanism',
+21 silly publish   main: 'index.js',
+21 silly publish   scripts: { test: 'echo "Error: no test specified" && exit 1' },
+21 silly publish   repository:
+21 silly publish    { type: 'git',
+21 silly publish      url: 'git+https://github.com/wonilsuh/queuer.git' },
+21 silly publish   keywords: [ 'javascript', 'queue' ],
+21 silly publish   author: { name: 'Wonil Suh', email: 'wonil@wonilsuh.com' },
+21 silly publish   license: 'ISC',
+21 silly publish   bugs: { url: 'https://github.com/wonilsuh/queuer/issues' },
+21 silly publish   homepage: 'https://github.com/wonilsuh/queuer#readme',
+21 silly publish   readme: '# queuer\n\n## Introduction\n\nThis is a simple queueing mechanism. It uses interval \n\n## Installation\n\n```\n$ npm install queuer;\n```\n\n## Usage\n\n```\n// require the class\nvar Queuer = require(\'queuer\');\n\n// instantiate\nvar queuer = new Queuer({\n\tinterval:1 // if not set, defaults to 1\n});\n\n// add event haldner\nqueuer.on(\'ALL-COMPLETE\', function(){\n\t// do what ever you do when all tasks are done\n});\n\nqueuer.on(\'TASK-COMPLETE\', function(options){\n\t// do what ever you do when a task has been done. The options argument is what was passed to .push() as the second argument.\n});\n\nqueuer.on(\'TASK-FAIL\', function(options){\n\t// do what ever you do when a task has failed. The options argument is what was passed to .push() as the second argument.\n});\n\n// add tasks. this will automatically start the queue.\nqueuer.push(\n\tfunction(next){\n\t\t// do your stuff.\n\t\tnext(true); // pass true for success, false for fail.\n\t},\n\t{\n\t\t// pass anything here. this opject will be passed back to the event handler\n\t\t...\n\t}\n);\n\n```\n\n## tester.js\n\n```\n"use strict";\n\nvar Queuer = require(\'./index.js\');\nvar queuer = new Queuer({\n\tinterval:1\n});\n\n// let\'s log when all tasks are done\nqueuer.on(\'ALL-COMPLETE\', function(){\n\tconsole.log(\'All completed!\');\n});\n\n// let\'s log when each task is done\nqueuer.on(\'TASK-COMPLETE\', function(options){\n\tconsole.log(\'Task completed: id==\'+options.id+\', delay==\'+options.time);\n});\n\n// let\'s log when each task failed\nqueuer.on(\'TASK-FAIL\', function(options){\n\tconsole.log(\'Task failed: id==\'+options.id+\', delay==\'+options.time);\n});\n\n// let\'s generate tasks, each with random completion delay\nfor(let i=0; i<100; i++){\n\n\tlet delay = Math.round(Math.random() *1000);\n\n\tqueuer.push(\n\t\t// this is the task function\n\t\tfunction(next){\n\t\t\t// let\'s simulate delays\n\t\t\tsetTimeout(function(){\n\t\t\t\t// let\'s simulate failures here.\n\t\t\t\tnext(Math.random() > 0.5 ? true : false);\n\t\t\t}, delay);\n\t\t},\n\t\t// options. pass anything you want.\n\t\t{\n\t\t\tid:\'task-\'+i,\n\t\t\ttime:delay\n\t\t}\n\t)\n}\n\n```',
+21 silly publish   readmeFilename: 'README.md',
+21 silly publish   gitHead: '67f88b4b8b08242a5779855c4a713e234b83b8a3',
+21 silly publish   _id: 'simple-queuer@1.0.2',
+21 silly publish   _shasum: 'fc17429ca9db3c6c9cb3f30f091a16cbc61b3f3e',
+21 silly publish   _from: '.' }
+22 verbose getPublishConfig undefined
+23 silly mapToRegistry name simple-queuer
+24 silly mapToRegistry using default registry
+25 silly mapToRegistry registry https://registry.npmjs.org/
+26 silly mapToRegistry uri https://registry.npmjs.org/simple-queuer
+27 verbose publish registryBase https://registry.npmjs.org/
+28 silly publish uploading /Users/suhwonil/.npm/simple-queuer/1.0.2/package.tgz
+29 verbose request uri https://registry.npmjs.org/simple-queuer
+30 verbose request sending authorization for write operation
+31 info attempt registry request try #1 at 11:31:15 PM
+32 verbose request using bearer token for auth
+33 verbose request id 3d75fa9352bdc4db
+34 http request PUT https://registry.npmjs.org/simple-queuer
+35 http 403 https://registry.npmjs.org/simple-queuer
+36 verbose headers { 'content-type': 'application/json',
+36 verbose headers   'cache-control': 'max-age=300',
+36 verbose headers   'content-length': '95',
+36 verbose headers   'accept-ranges': 'bytes',
+36 verbose headers   date: 'Sun, 01 May 2016 03:31:16 GMT',
+36 verbose headers   via: '1.1 varnish',
+36 verbose headers   connection: 'keep-alive',
+36 verbose headers   'x-served-by': 'cache-atl6221-ATL',
+36 verbose headers   'x-cache': 'MISS',
+36 verbose headers   'x-cache-hits': '0',
+36 verbose headers   'x-timer': 'S1462073475.764599,VS0,VE1185',
+36 verbose headers   vary: 'Accept-Encoding' }
+37 verbose request invalidating /Users/suhwonil/.npm/registry.npmjs.org/simple-queuer on PUT
+38 error publish Failed PUT 403
+39 verbose stack Error: "You cannot publish over the previously published version 1.0.2." : simple-queuer
+39 verbose stack     at makeError (/usr/local/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:264:12)
+39 verbose stack     at CachingRegistryClient.<anonymous> (/usr/local/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:252:14)
+39 verbose stack     at Request._callback (/usr/local/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:172:14)
+39 verbose stack     at Request.self.callback (/usr/local/lib/node_modules/npm/node_modules/request/request.js:199:22)
+39 verbose stack     at emitTwo (events.js:100:13)
+39 verbose stack     at Request.emit (events.js:185:7)
+39 verbose stack     at Request.<anonymous> (/usr/local/lib/node_modules/npm/node_modules/request/request.js:1036:10)
+39 verbose stack     at emitOne (events.js:95:20)
+39 verbose stack     at Request.emit (events.js:182:7)
+39 verbose stack     at IncomingMessage.<anonymous> (/usr/local/lib/node_modules/npm/node_modules/request/request.js:963:12)
+40 verbose statusCode 403
+41 verbose pkgid simple-queuer
+42 verbose cwd /Users/suhwonil/Sites/npm/simple-queuer
+43 error Darwin 14.5.0
+44 error argv "/usr/local/bin/node" "/usr/local/bin/npm" "publish"
+45 error node v5.8.0
+46 error npm  v3.7.3
+47 error code E403
+48 error "You cannot publish over the previously published version 1.0.2." : simple-queuer
+49 error If you need help, you may report this error at:
+49 error     <https://github.com/npm/npm/issues>
+50 verbose exit [ 1, true ]
