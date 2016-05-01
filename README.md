@@ -7,14 +7,14 @@ This is a simple queueing mechanism. It uses interval
 ## Installation
 
 ```
-$ npm install queuer;
+$ npm install simple-queuer;
 ```
 
 ## Usage
 
 ```
 // require the class
-var Queuer = require('queuer');
+var Queuer = require('simple-queuer');
 
 // instantiate
 var queuer = new Queuer({
