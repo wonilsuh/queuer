@@ -35,7 +35,7 @@ queuer.on('TASK-FAIL', function(options){
 });
 
 // add tasks. this will automatically start the queue.
-queuer.push(
+var taskEmitter = queuer.push(
 	function(next){
 		// do your stuff.
 		next(true); // pass true for success, false for fail.
@@ -45,6 +45,10 @@ queuer.push(
 		...
 	}
 );
+
+taskEmitter.on('TASK-FAIL', function(options){
+	// this way you can listen to task specific events too.
+});
 
 ```
 
