@@ -22,10 +22,15 @@ function runTask(){
 			newTask.resolver();
 		}
 	}else{
-		this.isRunning = false;
-		clearInterval(this.intervalId);
+		pauseQueue.bind(this)();
 	}
 
+}
+
+function pauseQueue(){
+	// console.log('Queuer:pauseQueue...');
+	clearInterval(this.intervalId);
+	this.isRunning = false;
 }
 
 /**
@@ -38,7 +43,7 @@ class Queuer{
 	 *	@param {int} interval - the interval on which Queuer will check for remaining items in the queue.
 	 */
 	constructor(interval = 10){
-		// console.log('Queuer!!!');
+		console.log('Queuer!!!');
 
 		this.interval = interval;
 		this.queue = [];
@@ -50,13 +55,41 @@ class Queuer{
 	/**	@function
 	 *	add a new item to the queue and start the queue
 	 *	@param {function} func - a function to be run when its turn comes. call next() parameter once it's done.
+	 *	@param {boolean} start - should the queue start running? default is true.
 	 */
-	push(func){
+	push(func, start = true){
 		// console.log('Queuer.push...', func);
 		this.queue.push({
 			resolver:() => func(()=>{this.isRunning=false;})
 		});
 
+		if(start===true) runInterval.bind(this)();
+	}
+
+	/**	@function
+	 *	add a new item to the beginning of the queue
+	 *	@param {function} func - a function to be run when its turn comes. call next() parameter once it's done.
+	 *	@param {boolean} start - should the queue start running? default is true.
+	 */
+	unshift(func ,start = true){
+		this.queue.unshift({
+			resolver:() => func(()=>{this.isRunning=false;})
+		});
+
+		if(start===true) runInterval.bind(this)();
+	}
+
+	/**	@function
+	 *	pauses the queue after the current task is finihsed
+	 */
+	pause(){
+		pauseQueue.bind(this)();
+	}
+
+	/**	@function
+	 *	restarts the queue
+	 */
+	run(){
 		runInterval.bind(this)();
 	}
 
