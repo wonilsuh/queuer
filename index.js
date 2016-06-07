@@ -2,4 +2,4 @@
 
 import Queuer from './Queuer.class';
 const queuer = new Queuer();
-export {Queuer as default, queuer{;
+export {Queuer as default, queuer};
