@@ -19,7 +19,6 @@ function runTask(){
 		if(this.isRunning !== true){
 			this.isRunning = true;
 			let newTask = this.queue.shift();
-			console.log(newTask);
 			newTask.resolver();
 		}
 	}else{
