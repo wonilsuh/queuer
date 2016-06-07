@@ -1,6 +1,6 @@
 {
   "name": "simple-queuer",
-  "version": "1.0.4",
+  "version": "2.0.0",
   "description": "A simple queueing mechanism",
   "main": "index.js",
   "scripts": {
