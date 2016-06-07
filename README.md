@@ -14,7 +14,7 @@ $ npm install simple-queuer;
 
 ```
 // require the class
-var Queuer = require('simple-queuer');
+var Queuer = require('simple-queuer')
 
 // instantiate
 var queuer = new Queuer({

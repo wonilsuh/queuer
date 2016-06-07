@@ -23,12 +23,18 @@ class Queuer{
 		// console.log('Queuer.push...');
 		options = options||{};
 
+		var eventEmitter = new EventEmitter();
+
 		this.queue.push({
 			func:func,
-			options:options
+			options:options,
+			eventEmitter:eventEmitter
 		});
 
 		if(options.startNow!==false) this.runQueue();
+
+		return eventEmitter;
+
 	}
 
 	runQueue(){
@@ -48,6 +54,7 @@ class Queuer{
 				newTask.func(function(result){
 					this.isQueueRunning = false;
 					this.eventEmitter.emit(result===true ? 'TASK-COMPLETE' : 'TASK-FAIL', newTask.options);
+					newTask.eventEmitter.emit(result===true ? 'TASK-COMPLETE' : 'TASK-FAIL', newTask.options);
 				}.bind(this));
 			}else{
 				// console.log('Queuer.runATask:done!!!');
