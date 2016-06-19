@@ -95,4 +95,4 @@ class Queuer{
 
 }
 
-module.exports = Queuer;
+export default Queuer;
