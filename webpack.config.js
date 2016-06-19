@@ -27,9 +27,9 @@ var loaders = [
 //-----------------------------------------------------
 //	here are the fianl webpack config files
 module.exports = {
-	"entry":"./src/Queuer.class.js",
+	"entry":"./src/index.js",
 	"output":{
-		"filename":"Queuer.class.js",
+		"filename":"index.js",
 		"path":"./",
 		"chunkFilename":"./[name]-[id].bundle.js",
 		"publicPath":"./"
