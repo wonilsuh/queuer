@@ -56,7 +56,7 @@ class Queuer{
 		this.intervalId;
 
 		this.useLocalStorage = useLocalStorage;
-		if(useLocalStorage===true) this.barn = new Barn();
+		if(useLocalStorage===true) this.barn = new Barn(localStorage);
 
 	}
 
