@@ -3,6 +3,8 @@
  */
 "use strict";
 
+import Barn from 'barn';
+
 function runInterval(){
 	// console.log('Queuer.runInterval...',this);
 
@@ -15,10 +17,11 @@ function runInterval(){
 function runTask(){
 	// console.log('Queuer.runTask...isRunning==='+this.isRunning+', length==='+this.queue.length);
 
-	if(this.queue.length > 0){
+	let length = this.useLocalStorage===true ? this.barn.llen(BARN_KEY) : this.queue.length;
+	if(length > 0){
 		if(this.isRunning !== true){
 			this.isRunning = true;
-			var newTask = this.queue.shift();
+			var newTask = this.useLocalStorage===true ? this.barn.lpop(BARN_KEY) :this.queue.shift();
 			newTask.resolver();
 		}
 	}else{
@@ -33,6 +36,8 @@ function pauseQueue(){
 	this.isRunning = false;
 }
 
+const BARN_KEY = 'QUEUER_BARN_KEY'
+
 /**
  *	Class that does queueing magic.
  */
@@ -42,13 +47,16 @@ class Queuer{
 	 *	Constructor.
 	 *	@param {int} interval - the interval on which Queuer will check for remaining items in the queue.
 	 */
-	constructor(interval = 10){
+	constructor(interval = 10, useLocalStorage = false){
 		console.log('Queuer!!!');
 
 		this.interval = interval;
 		this.queue = [];
 		this.isRunning = false;
 		this.intervalId;
+
+		this.useLocalStorage = useLocalStorage;
+		if(useLocalStorage===true) this.barn = new Barn();
 
 	}
 
@@ -59,9 +67,13 @@ class Queuer{
 	 */
 	push(func, start = true){
 		// console.log('Queuer.push...', func);
-		this.queue.push({
+
+		let toBeAdded = {
 			resolver:() => func(()=>{this.isRunning=false;})
-		});
+		};
+
+		if(this.useLocalStorage===true) this.barn.rpush(BARN_KEY, toBeAdded);
+		else queue.push(toBeAdded);
 
 		if(start===true) runInterval.bind(this)();
 	}
@@ -72,9 +84,13 @@ class Queuer{
 	 *	@param {boolean} start - should the queue start running? default is true.
 	 */
 	unshift(func ,start = true){
-		this.queue.unshift({
+
+		let toBeAdded = {
 			resolver:() => func(()=>{this.isRunning=false;})
-		});
+		};
+
+		if(this.useLocalStorage===true) this.barn.lpush(BARN_KEY, toBeAdded);
+		else this.queue.unshift(toBeAdded);
 
 		if(start===true) runInterval.bind(this)();
 	}
