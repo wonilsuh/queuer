@@ -17,11 +17,11 @@ function runInterval(){
 function runTask(){
 	// console.log('Queuer.runTask...isRunning==='+this.isRunning+', length==='+this.queue.length);
 
-	let length = this.useLocalStorage===true ? this.barn.llen(BARN_KEY) : this.queue.length;
+	let length = this.useLocalStorage===true ? this.barn.llen(this.localStorageKey) : this.queue.length;
 	if(length > 0){
 		if(this.isRunning !== true){
 			this.isRunning = true;
-			var newTask = this.useLocalStorage===true ? this.barn.lpop(BARN_KEY) :this.queue.shift();
+			var newTask = this.useLocalStorage===true ? this.barn.lpop(this.localStorageKey) :this.queue.shift();
 			newTask.resolver();
 		}
 	}else{
@@ -47,13 +47,14 @@ class Queuer{
 	 *	Constructor.
 	 *	@param {int} interval - the interval on which Queuer will check for remaining items in the queue.
 	 */
-	constructor(interval = 10, useLocalStorage = false){
+	constructor(interval = 10, useLocalStorage = false, localStorageKey){
 		console.log('Queuer!!!');
 
 		this.interval = interval;
 		this.queue = [];
 		this.isRunning = false;
 		this.intervalId;
+		this.localStorageKey = BARN_KEY + (localStorageKey || Math.floor(Math.random()*100000));
 
 		this.useLocalStorage = useLocalStorage;
 		if(useLocalStorage===true) this.barn = new Barn(localStorage);
@@ -72,7 +73,7 @@ class Queuer{
 			resolver:() => func(()=>{this.isRunning=false;})
 		};
 
-		if(this.useLocalStorage===true) this.barn.rpush(BARN_KEY, toBeAdded);
+		if(this.useLocalStorage===true) this.barn.rpush(this.localStorageKey, toBeAdded);
 		else queue.push(toBeAdded);
 
 		if(start===true) runInterval.bind(this)();
@@ -89,7 +90,7 @@ class Queuer{
 			resolver:() => func(()=>{this.isRunning=false;})
 		};
 
-		if(this.useLocalStorage===true) this.barn.lpush(BARN_KEY, toBeAdded);
+		if(this.useLocalStorage===true) this.barn.lpush(this.localStorageKey, toBeAdded);
 		else this.queue.unshift(toBeAdded);
 
 		if(start===true) runInterval.bind(this)();
